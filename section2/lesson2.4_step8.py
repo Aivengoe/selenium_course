@@ -13,12 +13,12 @@ try:
     browser = webdriver.Chrome()
     browser.get(link)
 
-    button = browser.find_element_by_css_selector("button.btn")
-    button.click()
-
-    price = WebDriverWait(browser, 12).until(
-        EC.text_to_be_present_in_element((By.ID, "price"))
+    WebDriverWait(browser, 12).until(
+        EC.text_to_be_present_in_element((By.ID, "price"), "$100")
     )
+
+    button = browser.find_element_by_id("book")
+    button.click()
 
     x_element = browser.find_element_by_id("input_value")
     x = x_element.text
@@ -27,7 +27,7 @@ try:
     input = browser.find_element_by_id("answer")
     input.send_keys(y)
 
-    button = browser.find_element_by_css_selector("button.btn")
+    button = browser.find_element_by_id("solve")
     button.click()
 
     alert = browser.switch_to.alert
