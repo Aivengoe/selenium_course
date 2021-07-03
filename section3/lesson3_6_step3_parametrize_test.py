@@ -7,17 +7,21 @@ import math
 def browser():
     print("\nstart browser for test..")
     browser = webdriver.Chrome()
+    browser.implicitly_wait(10)
     yield browser
     print("\nquit browser..")
     browser.quit()
 
-@pytest.mark.parametrize('time', ["95", "96", "97", "98", "99", "03", "04", "05"])
-def test_guest_should_see_login_link(browser, time):
-    link = f"https://stepik.org/lesson/236{time}/step/1"
+@pytest.mark.parametrize('num', ["895", "896", "897", "898", "899", "903", "904", "905"])
+def test_guest_should_see_login_link(browser, num):
+    link = f"https://stepik.org/lesson/236{num}/step/1"
     browser.get(link)
-
     answer = math.log(int(time.time()))
-    quiz = browser.find_element_by_class_name("quiz-component")
-    quiz.send_keys(answer)
+    quiz = browser.find_element_by_class_name("ember-text-area")
+    quiz.click()
+    quiz.send_keys('%.14f' % answer)
     button = browser.find_element_by_class_name("submit-submission")
     button.click()
+    
+    message = browser.find_element_by_class_name("smart-hints__hint")
+    assert "Correct!" in message.text, message.text
